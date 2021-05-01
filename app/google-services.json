@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "159115199203",
+    "project_id": "otp-verification-4ffe8",
+    "storage_bucket": "otp-verification-4ffe8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:159115199203:android:e6a678dea250e4dcfb7bd6",
+        "android_client_info": {
+          "package_name": "hcmute.edu.vn.mssv18110344"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "159115199203-09su8hs2i0plruu95vgf0crs962kg6th.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "hcmute.edu.vn.mssv18110344",
+            "certificate_hash": "545e3ed72d70d01eee1796e136d0d359e6425756"
+          }
+        },
+        {
+          "client_id": "159115199203-9jm3o7jrvvjhqtji797tef6j3bpluuk7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsEWG1h6eNlxnBLdbCPTW8nNgp0XiAN_0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "159115199203-9jm3o7jrvvjhqtji797tef6j3bpluuk7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
