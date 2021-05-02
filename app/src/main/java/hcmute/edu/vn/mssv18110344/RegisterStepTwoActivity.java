@@ -115,7 +115,7 @@ public class RegisterStepTwoActivity extends AppCompatActivity {
                         + txtCode6.getText().toString().trim();
 
                 if (verificationCode != null) {
-                    progressBar.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.VISIBLE);
                     btnNext.setVisibility(View.INVISIBLE);
                     PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.getCredential(verificationCode, inputCode);
                     FirebaseAuth.getInstance().signInWithCredential(phoneAuthCredential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
