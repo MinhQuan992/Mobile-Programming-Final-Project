@@ -32,6 +32,7 @@ public class RegisterStepTwoActivity extends AppCompatActivity {
     AppCompatButton btnNext;
     ProgressBar progressBar;
     TextView resendCode, message;
+    String phoneNumber;
     String verificationCode;
 
     @Override
@@ -55,6 +56,7 @@ public class RegisterStepTwoActivity extends AppCompatActivity {
         message.setVisibility(View.INVISIBLE);
         setUpInputs();
 
+        phoneNumber = getIntent().getStringExtra("phoneNumber");
         verificationCode = getIntent().getStringExtra("verificationCode");
 
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -69,7 +71,7 @@ public class RegisterStepTwoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                        "+84" + getIntent().getStringExtra("phoneNumber").substring(1),
+                        "+84" + phoneNumber.substring(1),
                         60,
                         TimeUnit.SECONDS,
                         RegisterStepTwoActivity.this,
@@ -126,6 +128,7 @@ public class RegisterStepTwoActivity extends AppCompatActivity {
                             message.setVisibility(View.INVISIBLE);
                             if (task.isSuccessful()) {
                                 Intent intent = new Intent(getApplicationContext(), RegisterStepThreeActivity.class);
+                                intent.putExtra("phoneNumber", phoneNumber);
                                 startActivity(intent);
                                 finish();
                                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
