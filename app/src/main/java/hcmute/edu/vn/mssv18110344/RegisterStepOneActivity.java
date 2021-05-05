@@ -18,6 +18,8 @@ import com.google.firebase.auth.PhoneAuthProvider;
 
 import java.util.concurrent.TimeUnit;
 
+import hcmute.edu.vn.mssv18110344.utility.DatabaseHandler;
+
 public class RegisterStepOneActivity extends AppCompatActivity {
 
     ImageButton btnClose;

@@ -1,6 +1,8 @@
 package hcmute.edu.vn.mssv18110344.bean;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     int id;
     String fullName;
     String sex;
@@ -8,8 +10,9 @@ public class User {
     String phone;
     String email;
     String password;
+    byte[] avatar;
 
-    public User(int id, String fullName, String sex, String dateOfBirth, String phone, String email, String password) {
+    public User(int id, String fullName, String sex, String dateOfBirth, String phone, String email, String password, byte[] avatar) {
         super();
         this.id = id;
         this.fullName = fullName;
@@ -18,9 +21,10 @@ public class User {
         this.phone = phone;
         this.email = email;
         this.password = password;
+        this.avatar = avatar;
     }
 
-    public User(String fullName, String sex, String dateOfBirth, String phone, String email, String password) {
+    public User(String fullName, String sex, String dateOfBirth, String phone, String email, String password, byte[] avatar) {
         super();
         this.fullName = fullName;
         this.sex = sex;
@@ -28,6 +32,7 @@ public class User {
         this.phone = phone;
         this.email = email;
         this.password = password;
+        this.avatar = avatar;
     }
 
     public int getId() {
@@ -84,5 +89,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public byte[] getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(byte[] avatar) {
+        this.avatar = avatar;
     }
 }

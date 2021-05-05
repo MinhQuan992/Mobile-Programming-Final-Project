@@ -16,6 +16,8 @@ import android.widget.Toast;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import hcmute.edu.vn.mssv18110344.utility.DatabaseHandler;
+
 public class RegisterStepThreeActivity extends AppCompatActivity {
 
     ImageButton btnBack;
@@ -130,8 +132,7 @@ public class RegisterStepThreeActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         super.onBackPressed();
         finish();
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);

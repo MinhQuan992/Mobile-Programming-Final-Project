@@ -1,4 +1,4 @@
-package hcmute.edu.vn.mssv18110344;
+package hcmute.edu.vn.mssv18110344.utility;
 
 import android.app.Activity;
 import android.content.Context;
@@ -18,7 +18,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ImagePicker {
+public class ImagePickerUtility {
     private static final int DEFAULT_MIN_WIDTH_QUALITY = 400;        // min pixels
     private static final String TAG = "ImagePicker";
     private static final String TEMP_IMAGE_NAME = "tempImage";

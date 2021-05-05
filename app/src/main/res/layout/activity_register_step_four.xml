@@ -26,11 +26,19 @@
         android:textColor="@color/white"
         android:textStyle="bold" />
 
+    <ImageButton
+        android:id="@+id/btnResetAvatar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="240dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/blue"
+        android:src="@drawable/ic_baseline_cancel_24" />
+
     <ImageView
         android:id="@+id/imgAvatar"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginTop="20dp"
         android:layout_gravity="center"
         app:srcCompat="@drawable/ic_baseline_account_box_24" />
 

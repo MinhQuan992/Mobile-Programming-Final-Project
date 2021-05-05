@@ -6,13 +6,21 @@ import androidx.appcompat.widget.AppCompatButton;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import hcmute.edu.vn.mssv18110344.bean.User;
+import hcmute.edu.vn.mssv18110344.utility.DatabaseHandler;
 
 public class MainActivity extends AppCompatActivity {
 
+    EditText txtEmail, txtPassword;
     AppCompatButton btnSignIn;
-    TextView txtForgotPassword;
-    TextView txtRegister;
+    TextView forgotPassword;
+    TextView register;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,17 +28,46 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
 
+        txtEmail = findViewById(R.id.txtEmail);
+        txtPassword = findViewById(R.id.txtPassword);
         btnSignIn = findViewById(R.id.btnSignIn);
-        txtForgotPassword = findViewById(R.id.txtForgotPassword);
-        txtRegister = findViewById(R.id.txtRegister);
+        forgotPassword = findViewById(R.id.forgotPassword);
+        register = findViewById(R.id.register);
+        progressBar = findViewById(R.id.progressBar);
+
+        progressBar.setVisibility(View.GONE);
+        btnSignIn.setVisibility(View.VISIBLE);
 
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String email = txtEmail.getText().toString().trim();
+                String password = txtPassword.getText().toString();
+
+                if (email.isEmpty() || password.isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "Please fill in all fields!", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                progressBar.setVisibility(View.VISIBLE);
+                btnSignIn.setVisibility(View.INVISIBLE);
+
+                DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+                User user = db.getUserByEmail(email);
+
+                if (user != null && password.equals(user.getPassword())) {
+                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                    intent.putExtra("user", user);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Wrong email or password!", Toast.LENGTH_LONG).show();
+                    progressBar.setVisibility(View.INVISIBLE);
+                    btnSignIn.setVisibility(View.VISIBLE);
+                }
             }
         });
 
-        txtForgotPassword.setOnClickListener(new View.OnClickListener() {
+        forgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, ResetPassStepOneActivity.class);
@@ -38,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        txtRegister.setOnClickListener(new View.OnClickListener() {
+        register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, RegisterStepOneActivity.class);

@@ -1,4 +1,4 @@
-package hcmute.edu.vn.mssv18110344;
+package hcmute.edu.vn.mssv18110344.utility;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -28,6 +28,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_PHONE = "phone";
     private static final String KEY_EMAIL = "email";
     private static final String KEY_PASSWORD = "password";
+    private static final String KEY_AVATAR = "avatar";
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -43,7 +44,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_DATE_OF_BIRTH + " TEXT, "
                 + KEY_PHONE + " TEXT, "
                 + KEY_EMAIL + " TEXT, "
-                + KEY_PASSWORD + " TEXT)";
+                + KEY_PASSWORD + " TEXT, "
+                + KEY_AVATAR + " BLOB)";
         db.execSQL(script);
     }
 
@@ -66,17 +68,28 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_PHONE, user.getPhone());
         values.put(KEY_EMAIL, user.getEmail());
         values.put(KEY_PASSWORD, user.getPassword());
+        values.put(KEY_AVATAR, user.getAvatar());
 
         db.insert(TABLE_USERS, null, values);
         db.close();
     }
 
-    public User getUserById(int userId) {
+    public User getUserByPhone(String phone) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_USERS, null, KEY_ID + " = ?", new String[] {String.valueOf(userId)}, null, null, null);
+        Cursor cursor = db.query(TABLE_USERS, null, KEY_PHONE + " = ?", new String[] {String.valueOf(phone)}, null, null, null);
         cursor.moveToFirst();
-        User user = new User(cursor.getInt(0), cursor.getString(1), cursor.getString(2),  cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6));
+        User user = new User(cursor.getInt(0), cursor.getString(1), cursor.getString(2),  cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6), cursor.getBlob(7));
         return user;
+    }
+
+    public User getUserByEmail(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_USERS, null, KEY_EMAIL + " = ?", new String[] {String.valueOf(email)}, null, null, null);
+        if (cursor.moveToFirst()) {
+            User user = new User(cursor.getInt(0), cursor.getString(1), cursor.getString(2),  cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6), cursor.getBlob(7));
+            return user;
+        }
+        return null;
     }
 
     public boolean phoneExisted(String phone) {
@@ -91,6 +104,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return cursor.moveToFirst();
     }
 
+    public int generateId() {
+        String script = "SELECT * FROM " + TABLE_USERS + " ORDER BY " + KEY_ID + " DESC LIMIT 1";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(script, null);
+        if (cursor.moveToFirst())
+            return cursor.getInt(cursor.getColumnIndex(KEY_ID)) + 1;
+        return 1;
+    }
+
     public List<User> getAllUsers() {
         List<User> userList = new ArrayList<>();
         String script = "SELECT * FROM " + TABLE_USERS;
@@ -100,7 +122,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cursor.moveToFirst();
 
         while (!cursor.isAfterLast()) {
-            User user = new User(cursor.getInt(0), cursor.getString(1), cursor.getString(2),  cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6));
+            User user = new User(cursor.getInt(0), cursor.getString(1), cursor.getString(2),  cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6), cursor.getBlob(7));
             userList.add(user);
             cursor.moveToNext();
         }
@@ -117,6 +139,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_PHONE, user.getPhone());
         values.put(KEY_EMAIL, user.getEmail());
         values.put(KEY_PASSWORD, user.getPassword());
+        values.put(KEY_AVATAR, user.getAvatar());
 
         db.update(TABLE_USERS, values, KEY_ID + " = ?", new String[] {String.valueOf(user.getId())});
         db.close();
