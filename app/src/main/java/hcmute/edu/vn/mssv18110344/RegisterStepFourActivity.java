@@ -2,15 +2,10 @@ package hcmute.edu.vn.mssv18110344;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
-import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
-import android.annotation.SuppressLint;
-import android.app.Notification;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -21,8 +16,8 @@ import android.widget.Toast;
 import hcmute.edu.vn.mssv18110344.bean.User;
 import hcmute.edu.vn.mssv18110344.utility.DatabaseHandler;
 import hcmute.edu.vn.mssv18110344.utility.DbBitmapUtility;
-import hcmute.edu.vn.mssv18110344.utility.GMailSenderUtility;
 import hcmute.edu.vn.mssv18110344.utility.ImagePickerUtility;
+import hcmute.edu.vn.mssv18110344.utility.JavaMailAPI;
 
 public class RegisterStepFourActivity extends AppCompatActivity {
 
@@ -31,6 +26,7 @@ public class RegisterStepFourActivity extends AppCompatActivity {
     AppCompatButton btnFinish;
     ProgressBar progressBar;
     Bitmap avt;
+    String fullName, dateOfBirth, email, password, sex, phone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +42,21 @@ public class RegisterStepFourActivity extends AppCompatActivity {
 
         avt = BitmapFactory.decodeResource(getResources(), R.drawable.default_avatar);
 
+        fullName = getIntent().getStringExtra("fullName");
+        dateOfBirth = getIntent().getStringExtra("dateOfBirth");
+        email = getIntent().getStringExtra("email");
+        password = getIntent().getStringExtra("password");
+        sex = getIntent().getStringExtra("sex");
+        phone = getIntent().getStringExtra("phone");
+
         btnResetAvatar.setVisibility(View.INVISIBLE);
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent backIntent = new Intent();
+                backIntent.putExtra("phoneNumber", phone);
+                setResult(RESULT_OK, backIntent);
                 finish();
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             }
@@ -83,29 +89,14 @@ public class RegisterStepFourActivity extends AppCompatActivity {
                 DatabaseHandler db = new DatabaseHandler(getApplicationContext());
 
                 int id = db.generateId();
-                String fullName = getIntent().getStringExtra("fullName");
-                String dateOfBirth = getIntent().getStringExtra("dateOfBirth");
-                String email = getIntent().getStringExtra("email");
-                String password = getIntent().getStringExtra("password");
-                String sex = getIntent().getStringExtra("sex");
-                String phone = getIntent().getStringExtra("phone");
                 byte[] avatar = DbBitmapUtility.getBytes(avt);
-
                 User user = new User(id, fullName, sex, dateOfBirth, phone, email, password, avatar);
                 db.addUser(user);
 
-                GMailSenderUtility sender = new GMailSenderUtility("unimart.hcmute@gmail.com", "mart-ute.2021");
-                try {
-                    sender.sendMail("Welcome to UNIMART!",
-                            "Your account has been created successfully. Now you can sign in to your account and enjoy great moments with us!\nUNIMART Team",
-                            "unimart.hcmute@gmail.com",
-                            email);
-                } catch (Exception e) {
-                    System.out.println("===============================================");
-                    System.out.println("==================== ERROR ====================");
-                    System.out.println("===============================================");
-                    e.printStackTrace();
-                }
+                String subject = "Welcome to Ministop!";
+                String msg = "Your account has been created successfully. Now you can sign in to your account and enjoy great moments with us!\nMinistop Team";
+                JavaMailAPI javaMailAPI = new JavaMailAPI(getApplicationContext(), email, subject, msg);
+                javaMailAPI.execute();
 
                 startActivity(intent);
                 finish();
@@ -117,6 +108,9 @@ public class RegisterStepFourActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        Intent backIntent = new Intent();
+        backIntent.putExtra("phoneNumber", phone);
+        setResult(RESULT_OK, backIntent);
         finish();
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }

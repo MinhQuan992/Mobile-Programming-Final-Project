@@ -5,6 +5,7 @@ import androidx.appcompat.widget.AppCompatButton;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     TextView forgotPassword;
     TextView register;
     ProgressBar progressBar;
+    boolean doubleBack = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,5 +84,24 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBack) {
+            super.onBackPressed();
+            return;
+        }
+
+        doubleBack = true;
+        Toast.makeText(this, "Press BACK again to exit!", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBack = false;
+            }
+        }, 2000);
     }
 }

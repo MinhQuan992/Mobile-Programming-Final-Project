@@ -48,50 +48,58 @@ public class RegisterStepOneActivity extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
+                btnNext.setVisibility(View.INVISIBLE);
+
                 String phoneNumber = txtPhone.getText().toString().trim();
+
                 if (phoneNumber.isEmpty()) {
                     Toast.makeText(getApplicationContext(), "Please enter your phone number!", Toast.LENGTH_LONG).show();
-                } else {
-                    DatabaseHandler db = new DatabaseHandler(getApplicationContext());
-                    if (db.phoneExisted(phoneNumber)) {
-                        Toast.makeText(getApplicationContext(), "This phone number already existed.", Toast.LENGTH_LONG).show();
-                    } else {
-                        progressBar.setVisibility(View.VISIBLE);
-                        btnNext.setVisibility(View.INVISIBLE);
-
-                        PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                                "+84" + phoneNumber.substring(1),
-                                60,
-                                TimeUnit.SECONDS,
-                                RegisterStepOneActivity.this,
-                                new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-                                    @Override
-                                    public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-                                        progressBar.setVisibility(View.GONE);
-                                        btnNext.setVisibility(View.VISIBLE);
-                                    }
-
-                                    @Override
-                                    public void onVerificationFailed(@NonNull FirebaseException e) {
-                                        progressBar.setVisibility(View.GONE);
-                                        btnNext.setVisibility(View.VISIBLE);
-                                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                                    }
-
-                                    @Override
-                                    public void onCodeSent(@NonNull String verificationCode, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-                                        progressBar.setVisibility(View.GONE);
-                                        btnNext.setVisibility(View.VISIBLE);
-                                        Intent intent = new Intent(getApplicationContext(), RegisterStepTwoActivity.class);
-                                        intent.putExtra("phoneNumber", phoneNumber);
-                                        intent.putExtra("verificationCode", verificationCode);
-                                        startActivity(intent);
-                                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                                    }
-                                }
-                        );
-                    }
+                    progressBar.setVisibility(View.INVISIBLE);
+                    btnNext.setVisibility(View.VISIBLE);
+                    return;
                 }
+
+                DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+
+                if (db.phoneExisted(phoneNumber)) {
+                    Toast.makeText(getApplicationContext(), "This phone number already existed.", Toast.LENGTH_LONG).show();
+                    progressBar.setVisibility(View.INVISIBLE);
+                    btnNext.setVisibility(View.VISIBLE);
+                    return;
+                }
+
+                PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                        "+84" + phoneNumber.substring(1),
+                        60,
+                        TimeUnit.SECONDS,
+                        RegisterStepOneActivity.this,
+                        new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                            @Override
+                            public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+                                progressBar.setVisibility(View.GONE);
+                                btnNext.setVisibility(View.VISIBLE);
+                            }
+
+                            @Override
+                            public void onVerificationFailed(@NonNull FirebaseException e) {
+                                progressBar.setVisibility(View.GONE);
+                                btnNext.setVisibility(View.VISIBLE);
+                                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                            }
+
+                            @Override
+                            public void onCodeSent(@NonNull String verificationCode, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                                progressBar.setVisibility(View.GONE);
+                                btnNext.setVisibility(View.VISIBLE);
+                                Intent intent = new Intent(getApplicationContext(), RegisterStepTwoActivity.class);
+                                intent.putExtra("phoneNumber", phoneNumber);
+                                intent.putExtra("verificationCode", verificationCode);
+                                startActivity(intent);
+                                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                            }
+                        }
+                );
             }
         });
     }

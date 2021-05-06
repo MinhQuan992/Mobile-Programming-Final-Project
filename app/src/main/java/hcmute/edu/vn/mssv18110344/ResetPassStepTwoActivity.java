@@ -101,6 +101,9 @@ public class ResetPassStepTwoActivity extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
+                btnNext.setVisibility(View.INVISIBLE);
+
                 if (txtCode1.getText().toString().trim().isEmpty()
                         || txtCode2.getText().toString().trim().isEmpty()
                         || txtCode3.getText().toString().trim().isEmpty()
@@ -108,6 +111,8 @@ public class ResetPassStepTwoActivity extends AppCompatActivity {
                         || txtCode5.getText().toString().trim().isEmpty()
                         || txtCode6.getText().toString().trim().isEmpty()) {
                     Toast.makeText(getApplicationContext(), "Please enter a valid code!", Toast.LENGTH_LONG).show();
+                    progressBar.setVisibility(View.INVISIBLE);
+                    btnNext.setVisibility(View.VISIBLE);
                     return;
                 }
 
@@ -119,8 +124,6 @@ public class ResetPassStepTwoActivity extends AppCompatActivity {
                         + txtCode6.getText().toString().trim();
 
                 if (verificationCode != null) {
-                    progressBar.setVisibility(View.VISIBLE);
-                    btnNext.setVisibility(View.INVISIBLE);
                     PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.getCredential(verificationCode, inputCode);
                     FirebaseAuth.getInstance().signInWithCredential(phoneAuthCredential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override

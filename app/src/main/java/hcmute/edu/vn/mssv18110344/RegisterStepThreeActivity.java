@@ -124,11 +124,19 @@ public class RegisterStepThreeActivity extends AppCompatActivity {
                 intent.putExtra("sex", sex);
                 intent.putExtra("phone", getIntent().getStringExtra("phoneNumber"));
 
-                startActivity(intent);
-                finish();
+                startActivityForResult(intent, 1);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RESULT_OK) {
+            progressBar.setVisibility(View.INVISIBLE);
+            btnNext.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
