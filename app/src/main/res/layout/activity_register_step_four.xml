@@ -15,23 +15,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/blue"
-        android:onClick="back"
         android:src="@drawable/ic_baseline_arrow_back_ios_24" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="REGISTER"
+        android:text="ĐĂNG KÝ"
         android:layout_gravity="center"
         android:textSize="40sp"
         android:textColor="@color/white"
         android:textStyle="bold" />
 
+    <ImageButton
+        android:id="@+id/btnResetAvatar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="240dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/blue"
+        android:src="@drawable/ic_baseline_cancel_24" />
+
     <ImageView
         android:id="@+id/imgAvatar"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginTop="20dp"
         android:layout_gravity="center"
         app:srcCompat="@drawable/ic_baseline_account_box_24" />
 
@@ -39,23 +46,34 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Click the above image to choose your profile picture. If you skip this step, your profile picture will be set by default!"
+        android:text="Bạn vui lòng chạm vào ảnh bên trên để đặt ảnh đại diện. Nếu bạn bỏ qua bước này,\nảnh đại diện của bạn sẽ được đặt mặc định."
         android:layout_gravity="center"
         android:textAlignment="center"
         android:textSize="20sp"
         android:textColor="@color/white" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnFinish"
-        android:layout_width="150dp"
+    <FrameLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/custom_button"
-        android:text="Finish"
-        android:textAllCaps="false"
-        android:textColor="@color/blue"
-        android:textSize="25sp"
-        android:textStyle="bold"
-        android:onClick="openStepFive" />
+        android:layout_marginTop="30dp">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnFinish"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/custom_button"
+            android:text="Hoàn thành"
+            android:textAllCaps="false"
+            android:textColor="@color/blue"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+    </FrameLayout>
 </LinearLayout>

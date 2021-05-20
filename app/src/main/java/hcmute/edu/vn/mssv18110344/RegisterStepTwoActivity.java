@@ -32,6 +32,7 @@ public class RegisterStepTwoActivity extends AppCompatActivity {
     AppCompatButton btnNext;
     ProgressBar progressBar;
     TextView resendCode, message;
+    String phoneNumber;
     String verificationCode;
 
     @Override
@@ -55,6 +56,7 @@ public class RegisterStepTwoActivity extends AppCompatActivity {
         message.setVisibility(View.INVISIBLE);
         setUpInputs();
 
+        phoneNumber = getIntent().getStringExtra("phoneNumber");
         verificationCode = getIntent().getStringExtra("verificationCode");
 
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -69,7 +71,7 @@ public class RegisterStepTwoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                        "+84" + getIntent().getStringExtra("phoneNumber").substring(1),
+                        "+84" + phoneNumber.substring(1),
                         60,
                         TimeUnit.SECONDS,
                         RegisterStepTwoActivity.this,
@@ -87,7 +89,7 @@ public class RegisterStepTwoActivity extends AppCompatActivity {
                             @Override
                             public void onCodeSent(@NonNull String newVerificationCode, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                                 verificationCode = newVerificationCode;
-                                Toast.makeText(getApplicationContext(), "We have sent a new SMS message!", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "Chúng tôi đã gửi một tin nhắn mới!", Toast.LENGTH_LONG).show();
                             }
                         }
                 );
@@ -97,13 +99,18 @@ public class RegisterStepTwoActivity extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
+                btnNext.setVisibility(View.INVISIBLE);
+
                 if (txtCode1.getText().toString().trim().isEmpty()
                 || txtCode2.getText().toString().trim().isEmpty()
                 || txtCode3.getText().toString().trim().isEmpty()
                 || txtCode4.getText().toString().trim().isEmpty()
                 || txtCode5.getText().toString().trim().isEmpty()
                 || txtCode6.getText().toString().trim().isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "Please enter a valid code!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Bạn phải nhập một mã hợp lệ!", Toast.LENGTH_LONG).show();
+                    progressBar.setVisibility(View.INVISIBLE);
+                    btnNext.setVisibility(View.VISIBLE);
                     return;
                 }
 
@@ -115,8 +122,6 @@ public class RegisterStepTwoActivity extends AppCompatActivity {
                         + txtCode6.getText().toString().trim();
 
                 if (verificationCode != null) {
-                    progressBar.setVisibility(View.VISIBLE);
-                    btnNext.setVisibility(View.INVISIBLE);
                     PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.getCredential(verificationCode, inputCode);
                     FirebaseAuth.getInstance().signInWithCredential(phoneAuthCredential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
@@ -126,6 +131,7 @@ public class RegisterStepTwoActivity extends AppCompatActivity {
                             message.setVisibility(View.INVISIBLE);
                             if (task.isSuccessful()) {
                                 Intent intent = new Intent(getApplicationContext(), RegisterStepThreeActivity.class);
+                                intent.putExtra("phoneNumber", phoneNumber);
                                 startActivity(intent);
                                 finish();
                                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
@@ -264,8 +270,7 @@ public class RegisterStepTwoActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         super.onBackPressed();
         finish();
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);

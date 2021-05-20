@@ -15,7 +15,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/blue"
-        android:onClick="back"
         android:src="@drawable/ic_baseline_arrow_back_ios_24" />
 
     <TextView
@@ -23,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="RESET\nPASSWORD"
+        android:text="ĐẶT LẠI\nMẬT KHẨU"
         android:textAlignment="center"
         android:textSize="40sp"
         android:textColor="@color/white"
@@ -35,10 +34,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
-        android:background="@drawable/custom_edittext"
+        android:background="@drawable/custom_edittext_type_1"
         android:drawableStart="@drawable/ic_baseline_vpn_key_24"
         android:drawablePadding="10dp"
-        android:hint="New Password"
+        android:hint="Mật khẩu mới"
         android:inputType="textPassword"
         android:textColor="@color/white"
         android:textColorHint="@color/white"
@@ -50,26 +49,37 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
-        android:background="@drawable/custom_edittext"
+        android:background="@drawable/custom_edittext_type_1"
         android:drawableStart="@drawable/ic_baseline_vpn_key_24"
         android:drawablePadding="10dp"
-        android:hint="Confirm New Password"
+        android:hint="Nhập lại mật khẩu mới"
         android:inputType="textPassword"
         android:textColor="@color/white"
         android:textColorHint="@color/white"
         android:textSize="20sp" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnFinish"
-        android:layout_width="150dp"
+    <FrameLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/custom_button"
-        android:text="Finish"
-        android:textAllCaps="false"
-        android:textColor="@color/blue"
-        android:textSize="25sp"
-        android:textStyle="bold"
-        android:onClick="openStepFour" />
+        android:layout_marginTop="30dp">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnFinish"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/custom_button"
+            android:text="Hoàn thành"
+            android:textAllCaps="false"
+            android:textColor="@color/blue"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+    </FrameLayout>
 </LinearLayout>
