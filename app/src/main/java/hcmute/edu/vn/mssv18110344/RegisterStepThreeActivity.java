@@ -64,14 +64,14 @@ public class RegisterStepThreeActivity extends AppCompatActivity {
                 String sex;
 
                 if (fullName.isEmpty() || dateOfBirth.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "Please fill in all fields!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Bạn phải nhập tất cả thông tin!", Toast.LENGTH_LONG).show();
                     progressBar.setVisibility(View.GONE);
                     btnNext.setVisibility(View.VISIBLE);
                     return;
                 }
 
                 if (!isEmailValid(email)) {
-                    Toast.makeText(getApplicationContext(), "Please enter a valid email address!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Bạn phải nhập địa chỉ email hợp lệ!", Toast.LENGTH_LONG).show();
                     txtEmail.requestFocus();
                     progressBar.setVisibility(View.GONE);
                     btnNext.setVisibility(View.VISIBLE);
@@ -79,9 +79,10 @@ public class RegisterStepThreeActivity extends AppCompatActivity {
                 }
 
                 DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+                db.openDataBase();
 
                 if (db.emailExisted(email)) {
-                    Toast.makeText(getApplicationContext(), "This email address already existed.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Địa chỉ email này đã tồn tại trong hệ thống.", Toast.LENGTH_LONG).show();
                     txtEmail.requestFocus();
                     progressBar.setVisibility(View.GONE);
                     btnNext.setVisibility(View.VISIBLE);
@@ -89,7 +90,7 @@ public class RegisterStepThreeActivity extends AppCompatActivity {
                 }
 
                 if (!password.equals(confirmPassword)) {
-                    Toast.makeText(getApplicationContext(), "These passwords do not match.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Mật khẩu không trùng khớp.", Toast.LENGTH_LONG).show();
                     txtPassword.setText("");
                     txtPassword.requestFocus();
                     txtConfirmPassword.setText("");
@@ -99,11 +100,11 @@ public class RegisterStepThreeActivity extends AppCompatActivity {
                 }
 
                 if (!isPasswordValid(password)) {
-                    Toast.makeText(getApplicationContext(), "Your password must contain at least " +
-                            "1 lowercase character, " +
-                            "1 uppercase character, " +
-                            "1 digit, " +
-                            "and be between 8 and 20 characters in length.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Mật khẩu của bạn phải chứa ít nhất " +
+                            "1 ký tự thường, " +
+                            "1 ký tự hoa, " +
+                            "1 chữ số, " +
+                            "và có độ dài từ 8 đến 20 ký tự!", Toast.LENGTH_LONG).show();
                     txtPassword.setText("");
                     txtPassword.requestFocus();
                     txtConfirmPassword.setText("");
@@ -154,7 +155,7 @@ public class RegisterStepThreeActivity extends AppCompatActivity {
     }
 
     private boolean isPasswordValid(String password) {
-        String expression = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,50}$";
+        String expression = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,20}$";
         Pattern pattern = Pattern.compile(expression);
         Matcher matcher = pattern.matcher(password);
         return matcher.matches();

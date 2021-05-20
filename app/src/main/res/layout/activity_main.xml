@@ -12,13 +12,13 @@
         android:layout_width="175dp"
         android:layout_height="175dp"
         android:layout_gravity="center"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         app:srcCompat="@drawable/ic_baseline_account_circle_24" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SIGN IN"
+        android:text="ĐĂNG NHẬP"
         android:layout_gravity="center"
         android:textSize="40sp"
         android:textColor="@color/white"
@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
-        android:background="@drawable/custom_edittext"
+        android:background="@drawable/custom_edittext_type_1"
         android:drawableStart="@drawable/ic_baseline_email_24"
         android:drawablePadding="10dp"
         android:hint="Email"
@@ -45,14 +45,25 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
-        android:background="@drawable/custom_edittext"
+        android:background="@drawable/custom_edittext_type_1"
         android:drawableStart="@drawable/ic_baseline_vpn_key_24"
         android:drawablePadding="10dp"
-        android:hint="Password"
+        android:hint="Mật khẩu"
         android:inputType="textPassword"
         android:textColor="@color/white"
         android:textColorHint="@color/white"
         android:textSize="20sp" />
+
+    <CheckBox
+        android:id="@+id/chkRemember"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lưu thông tin đăng nhập"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="10dp" />
+
 
     <TextView
         android:id="@+id/forgotPassword"
@@ -60,7 +71,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="30dp"
-        android:text="Forgot your password?"
+        android:text="Quên mật khẩu?"
         android:textColor="@color/white"
         android:textSize="15sp" />
 
@@ -71,11 +82,11 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnSignIn"
-            android:layout_width="150dp"
+            android:layout_width="180dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@drawable/custom_button"
-            android:text="Sign In"
+            android:text="Đăng nhập"
             android:textAllCaps="false"
             android:textColor="@color/blue"
             android:textSize="25sp"
@@ -95,7 +106,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="30dp"
-        android:text="Don't have an account? Register now!"
+        android:text="Bạn chưa có tài khoản? Đăng ký ngay!"
         android:textColor="@color/white"
         android:textSize="15dp" />
 </LinearLayout>

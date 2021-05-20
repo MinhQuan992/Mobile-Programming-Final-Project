@@ -5,20 +5,21 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.util.Base64;
 
 import java.io.ByteArrayOutputStream;
 
 public class DbBitmapUtility {
-    // convert from bitmap to byte array
-    public static byte[] getBytes(Bitmap bitmap) {
+    public static String getString(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
-        return stream.toByteArray();
+        byte[] bytes = stream.toByteArray();
+        return Base64.encodeToString(bytes, 1);
     }
 
-    // convert from byte array to bitmap
-    public static Bitmap getImage(byte[] image) {
-        return BitmapFactory.decodeByteArray(image, 0, image.length);
+    public static Bitmap getImage(String base64Text) {
+        byte[] decodedString = Base64.decode(base64Text, 1);
+        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
     }
 
     // CHECK THIS

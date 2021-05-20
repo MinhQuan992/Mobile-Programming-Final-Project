@@ -87,14 +87,15 @@ public class RegisterStepFourActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(getApplicationContext(), RegisterStepFiveActivity.class);
                 DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+                db.openDataBase();
 
                 int id = db.generateId();
-                byte[] avatar = DbBitmapUtility.getBytes(avt);
+                String avatar = DbBitmapUtility.getString(avt);
                 User user = new User(id, fullName, sex, dateOfBirth, phone, email, password, avatar);
                 db.addUser(user);
 
-                String subject = "Welcome to Ministop!";
-                String msg = "Your account has been created successfully. Now you can sign in to your account and enjoy great moments with us!\nMinistop Team";
+                String subject = "Chào mừng bạn đến với Ministop";
+                String msg = "Tài khoản của bạn đã được tạo thành công. Bạn có thể đăng nhập và tận hưởng những giây phút tuyệt vời cùng Ministop!\nĐội ngũ hỗ trợ Ministop";
                 JavaMailAPI javaMailAPI = new JavaMailAPI(getApplicationContext(), email, subject, msg);
                 javaMailAPI.execute();
 
@@ -122,7 +123,7 @@ public class RegisterStepFourActivity extends AppCompatActivity {
                 avt = ImagePickerUtility.getImageFromResult(this, resultCode, data);
                 imgAvatar.setImageBitmap(avt);
                 btnResetAvatar.setVisibility(View.VISIBLE);
-                Toast.makeText(getApplicationContext(), "Load image successfully!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Tải ảnh thành công!", Toast.LENGTH_LONG).show();
                 break;
             default:
                 super.onActivityResult(requestCode, resultCode, data);

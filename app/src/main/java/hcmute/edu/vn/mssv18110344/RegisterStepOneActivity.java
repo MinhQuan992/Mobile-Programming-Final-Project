@@ -54,16 +54,18 @@ public class RegisterStepOneActivity extends AppCompatActivity {
                 String phoneNumber = txtPhone.getText().toString().trim();
 
                 if (phoneNumber.isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "Please enter your phone number!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Bạn phải nhập số điện thoại!", Toast.LENGTH_LONG).show();
                     progressBar.setVisibility(View.INVISIBLE);
                     btnNext.setVisibility(View.VISIBLE);
                     return;
                 }
 
                 DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+                db.createDataBase();
+                db.openDataBase();
 
                 if (db.phoneExisted(phoneNumber)) {
-                    Toast.makeText(getApplicationContext(), "This phone number already existed.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Số điện thoại này đã tồn tại trong hệ thống.", Toast.LENGTH_LONG).show();
                     progressBar.setVisibility(View.INVISIBLE);
                     btnNext.setVisibility(View.VISIBLE);
                     return;

@@ -91,7 +91,7 @@ public class ResetPassStepTwoActivity extends AppCompatActivity {
                             @Override
                             public void onCodeSent(@NonNull String newVerificationCode, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                                 verificationCode = newVerificationCode;
-                                Toast.makeText(getApplicationContext(), "We have sent a new SMS message!", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "Chúng tôi đã gửi một tin nhắn mới!", Toast.LENGTH_LONG).show();
                             }
                         }
                 );
@@ -110,7 +110,7 @@ public class ResetPassStepTwoActivity extends AppCompatActivity {
                         || txtCode4.getText().toString().trim().isEmpty()
                         || txtCode5.getText().toString().trim().isEmpty()
                         || txtCode6.getText().toString().trim().isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "Please enter a valid code!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Bạn phải nhập một mã hợp lệ!", Toast.LENGTH_LONG).show();
                     progressBar.setVisibility(View.INVISIBLE);
                     btnNext.setVisibility(View.VISIBLE);
                     return;

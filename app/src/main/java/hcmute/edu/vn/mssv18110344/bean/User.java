@@ -10,9 +10,9 @@ public class User implements Serializable {
     String phone;
     String email;
     String password;
-    byte[] avatar;
+    String avatar;
 
-    public User(int id, String fullName, String sex, String dateOfBirth, String phone, String email, String password, byte[] avatar) {
+    public User(int id, String fullName, String sex, String dateOfBirth, String phone, String email, String password, String avatar) {
         super();
         this.id = id;
         this.fullName = fullName;
@@ -24,7 +24,7 @@ public class User implements Serializable {
         this.avatar = avatar;
     }
 
-    public User(String fullName, String sex, String dateOfBirth, String phone, String email, String password, byte[] avatar) {
+    public User(String fullName, String sex, String dateOfBirth, String phone, String email, String password, String avatar) {
         super();
         this.fullName = fullName;
         this.sex = sex;
@@ -91,11 +91,11 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public byte[] getAvatar() {
+    public String getAvatar() {
         return avatar;
     }
 
-    public void setAvatar(byte[] avatar) {
+    public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
 }

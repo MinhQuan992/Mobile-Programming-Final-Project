@@ -54,14 +54,14 @@ public class ResetPassStepThreeActivity extends AppCompatActivity {
                 String confirmPassword = txtConfirmPassword.getText().toString().trim();
 
                 if (password.isEmpty() || confirmPassword.isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "Please fill in all fields!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Bạn phải nhập tất cả thông tin!", Toast.LENGTH_LONG).show();
                     progressBar.setVisibility(View.GONE);
                     btnFinish.setVisibility(View.VISIBLE);
                     return;
                 }
 
                 if (!password.equals(confirmPassword)) {
-                    Toast.makeText(getApplicationContext(), "These passwords do not match.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Mật khẩu không trùng khớp.", Toast.LENGTH_LONG).show();
                     txtPassword.setText("");
                     txtPassword.requestFocus();
                     txtConfirmPassword.setText("");
@@ -71,11 +71,11 @@ public class ResetPassStepThreeActivity extends AppCompatActivity {
                 }
 
                 if (!isPasswordValid(password)) {
-                    Toast.makeText(getApplicationContext(), "Your password must contain at least " +
-                            "1 lowercase character, " +
-                            "1 uppercase character, " +
-                            "1 digit, " +
-                            "and be between 8 and 20 characters in length.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Mật khẩu của bạn phải chứa ít nhất " +
+                            "1 ký tự thường, " +
+                            "1 ký tự hoa, " +
+                            "1 chữ số, " +
+                            "và có độ dài từ 8 đến 20 ký tự!", Toast.LENGTH_LONG).show();
                     txtPassword.setText("");
                     txtPassword.requestFocus();
                     txtConfirmPassword.setText("");
@@ -88,6 +88,7 @@ public class ResetPassStepThreeActivity extends AppCompatActivity {
                 user.setPassword(password);
 
                 DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+                db.openDataBase();
                 db.updateUser(user);
 
                 Intent intent = new Intent(getApplicationContext(), ResetPassStepFourActivity.class);
@@ -106,7 +107,7 @@ public class ResetPassStepThreeActivity extends AppCompatActivity {
     }
 
     private boolean isPasswordValid(String password) {
-        String expression = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,50}$";
+        String expression = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,20}$";
         Pattern pattern = Pattern.compile(expression);
         Matcher matcher = pattern.matcher(password);
         return matcher.matches();
