@@ -125,6 +125,9 @@ public class RegisterStepFourActivity extends AppCompatActivity {
         switch(requestCode) {
             case 0:
                 avt = ImagePickerUtility.getImageFromResult(this, resultCode, data);
+                if (avt == null)
+                    return;
+
                 Bitmap circleBitmap = Bitmap.createBitmap(avt.getWidth(), avt.getHeight(), Bitmap.Config.ARGB_8888);
 
                 BitmapShader shader = new BitmapShader (avt,  Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);

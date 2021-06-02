@@ -39,8 +39,6 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         getSupportActionBar().hide();
 
-        User user = (User) getIntent().getSerializableExtra("user");
-
         bottomNav = findViewById(R.id.bottom_nav);
         fragment_container = findViewById(R.id.fragment_container);
 
