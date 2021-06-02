@@ -2,6 +2,7 @@ package hcmute.edu.vn.mssv18110344;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,9 +30,8 @@ import hcmute.edu.vn.mssv18110344.utility.DbBitmapUtility;
 
 public class HomeActivity extends AppCompatActivity {
 
-    EditText txtFind;
-    ImageButton btnCart, btnRice, btnNoodle, btnWater, btnSalad, btnSandwich, btnFastFood;
     BottomNavigationView bottomNav;
+    FrameLayout fragment_container;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,63 +41,35 @@ public class HomeActivity extends AppCompatActivity {
 
         User user = (User) getIntent().getSerializableExtra("user");
 
-        txtFind = findViewById(R.id.txtFind);
-        btnCart = findViewById(R.id.btnCart);
-        btnRice = findViewById(R.id.btnRice);
-        btnNoodle = findViewById(R.id.btnNoodle);
-        btnWater = findViewById(R.id.btnWater);
-        btnSalad = findViewById(R.id.btnSalad);
-        btnSandwich = findViewById(R.id.btnSandwich);
-        btnFastFood = findViewById(R.id.btnFastFood);
         bottomNav = findViewById(R.id.bottom_nav);
+        fragment_container = findViewById(R.id.fragment_container);
 
-        btnRice.setOnClickListener(this::onClick);
-        btnNoodle.setOnClickListener(this::onClick);
-        btnWater.setOnClickListener(this::onClick);
-        btnSalad.setOnClickListener(this::onClick);
-        btnSandwich.setOnClickListener(this::onClick);
-        btnFastFood.setOnClickListener(this::onClick);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                new HomeFragment()).commit();
 
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Fragment selectedFragment = null;
+
                 switch (item.getItemId()) {
+                    case R.id.nav_home:
+                        selectedFragment = new HomeFragment();
+                        break;
                     case R.id.nav_orders:
+                        selectedFragment = new OrderFragment();
                         break;
                     case R.id.nav_account:
-                        Intent intent = new Intent(getApplicationContext(), ManageAccountActivity.class);
-                        intent.putExtra("user", user);
-                        startActivity(intent);
+                        selectedFragment = new AccountFragment();
                         break;
                 }
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        selectedFragment).commit();
+
                 return true;
             }
         });
-    }
-
-    public void onClick(View v) {
-        Intent intent = new Intent(getApplicationContext(), SeeProductsActivity.class);
-        switch (v.getId()) {
-            case R.id.btnRice:
-                intent.putExtra("category", 1);
-                break;
-            case R.id.btnNoodle:
-                intent.putExtra("category", 2);
-                break;
-            case R.id.btnWater:
-                intent.putExtra("category", 3);
-                break;
-            case R.id.btnSandwich:
-                intent.putExtra("category", 4);
-                break;
-            case R.id.btnFastFood:
-                intent.putExtra("category", 5);
-                break;
-            case R.id.btnSalad:
-                intent.putExtra("category", 6);
-                break;
-        }
-        startActivity(intent);
     }
 
     @Override
