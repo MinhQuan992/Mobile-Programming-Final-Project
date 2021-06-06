@@ -17,6 +17,8 @@ import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import hcmute.edu.vn.mssv18110344.utility.DatabaseHandler;
 
@@ -53,8 +55,8 @@ public class RegisterStepOneActivity extends AppCompatActivity {
 
                 String phoneNumber = txtPhone.getText().toString().trim();
 
-                if (phoneNumber.isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "Bạn phải nhập số điện thoại!", Toast.LENGTH_LONG).show();
+                if (!isPhoneValid(phoneNumber)) {
+                    Toast.makeText(getApplicationContext(), "Bạn phải nhập số điện thoại hợp lệ!", Toast.LENGTH_LONG).show();
                     progressBar.setVisibility(View.INVISIBLE);
                     btnNext.setVisibility(View.VISIBLE);
                     return;
@@ -104,5 +106,12 @@ public class RegisterStepOneActivity extends AppCompatActivity {
                 );
             }
         });
+    }
+
+    private boolean isPhoneValid(String phone) {
+        String expression = "^\\d{10}$";
+        Pattern pattern = Pattern.compile(expression);
+        Matcher matcher = pattern.matcher(phone);
+        return matcher.matches();
     }
 }

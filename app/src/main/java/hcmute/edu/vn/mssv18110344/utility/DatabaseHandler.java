@@ -6,8 +6,6 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -17,9 +15,9 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import hcmute.edu.vn.mssv18110344.R;
-import hcmute.edu.vn.mssv18110344.bean.Category;
+import hcmute.edu.vn.mssv18110344.bean.Address;
 import hcmute.edu.vn.mssv18110344.bean.Product;
+import hcmute.edu.vn.mssv18110344.bean.AdministrativeUnit;
 import hcmute.edu.vn.mssv18110344.bean.User;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
@@ -34,6 +32,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String TABLE_USERS = "users";
     private static final String TABLE_CATEGORIES = "categories";
     private static final String TABLE_PRODUCTS = "products";
+    private static final String TABLE_PROVINCES = "provinces";
+    private static final String TABLE_DISTRICTS = "districts";
+    private static final String TABLE_WARDS = "wards";
+    private static final String TABLE_ADDRESSES = "addresses";
 
     //Common column names
     private static final String KEY_ID = "id";
@@ -53,6 +55,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_PRICE = "price";
     private static final String KEY_AMOUNT = "amount";
     private static final String KEY_CATEGORY = "category";
+
+    //DISTRICTS and WARDS table - common column names
+    private static final String KEY_PROVINCE_ID = "province_id";
+    private static final String KEY_DISTRICT_ID = "district_id";
+
+    //ADDRESSES table - common column names
+    private static final String KEY_PROVINCE = "province";
+    private static final String KEY_DISTRICT = "district";
+    private static final String KEY_WARD = "ward";
+    private static final String KEY_STREET = "street";
+    private static final String KEY_USER_ID = "user_id";
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -119,7 +132,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     }
 
-    //Queries of USERS table
     public void addUser(User user) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -189,6 +201,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             userList.add(user);
             cursor.moveToNext();
         }
+
         return userList;
     }
 
@@ -208,13 +221,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void deleteUser(int userId) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_USERS, KEY_ID + " = ?", new String[] {String.valueOf(userId)});
-        db.close();
-    }
-
-    //Queries of PRODUCTS table
     public List<Product> getAllProducts() {
         List<Product> productList = new ArrayList<>();
         String script = "SELECT * FROM " + TABLE_PRODUCTS;
@@ -228,6 +234,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             productList.add(product);
             cursor.moveToNext();
         }
+
         return productList;
     }
 
@@ -243,16 +250,144 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             productList.add(product);
             cursor.moveToNext();
         }
+
         return productList;
     }
 
-    public void addProductPicture(Product product) {
+    public List<AdministrativeUnit> getProvinces() {
+        List<AdministrativeUnit> provinceList = new ArrayList<>();
+        String script = "SELECT * FROM " + TABLE_PROVINCES;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(script, null);
+        cursor.moveToFirst();
+
+        while (!cursor.isAfterLast()) {
+            AdministrativeUnit province = new AdministrativeUnit(cursor.getString(0), cursor.getString(1), cursor.getString(2), null);
+            provinceList.add(province);
+            cursor.moveToNext();
+        }
+
+        return  provinceList;
+    }
+
+    public String getProvinceName(String id) {
+        String script = "SELECT * FROM " + TABLE_PROVINCES + " WHERE " + KEY_ID + " = '" + id + "'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(script, null);
+        cursor.moveToFirst();
+        return cursor.getString(1);
+    }
+
+    public List<AdministrativeUnit> getDistricts(String provinceId) {
+        List<AdministrativeUnit> districtList = new ArrayList<>();
+        String script = "SELECT * FROM " + TABLE_DISTRICTS + " WHERE " + KEY_PROVINCE_ID + " = '" + provinceId + "'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(script, null);
+        cursor.moveToFirst();
+
+        while (!cursor.isAfterLast()) {
+            AdministrativeUnit district = new AdministrativeUnit(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3));
+            districtList.add(district);
+            cursor.moveToNext();
+        }
+
+        return  districtList;
+    }
+
+    public String getDistrictName(String id) {
+        String script = "SELECT * FROM " + TABLE_DISTRICTS + " WHERE " + KEY_ID + " = '" + id + "'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(script, null);
+        cursor.moveToFirst();
+        return cursor.getString(1);
+    }
+
+    public List<AdministrativeUnit> getWards(String districtId) {
+        List<AdministrativeUnit> wardList = new ArrayList<>();
+        String script = "SELECT * FROM " + TABLE_WARDS + " WHERE " + KEY_DISTRICT_ID + " = '" + districtId + "'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(script, null);
+        cursor.moveToFirst();
+
+        while (!cursor.isAfterLast()) {
+            AdministrativeUnit ward = new AdministrativeUnit(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3));
+            wardList.add(ward);
+            cursor.moveToNext();
+        }
+
+        return  wardList;
+    }
+
+    public String getWardName(String id) {
+        String script = "SELECT * FROM " + TABLE_WARDS + " WHERE " + KEY_ID + " = '" + id + "'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(script, null);
+        cursor.moveToFirst();
+        return cursor.getString(1);
+    }
+
+    public List<Address> getAddresses(int userId) {
+        List<Address> addressList = new ArrayList<>();
+        String script = "SELECT * FROM " + TABLE_ADDRESSES + " WHERE " + KEY_USER_ID + " = " + String.valueOf(userId);
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(script, null);
+
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+                Address address = new Address(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6), cursor.getInt(7));
+                addressList.add(address);
+                cursor.moveToNext();
+            }
+            return addressList;
+        }
+
+        return null;
+    }
+
+    public void addAddress(Address address) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        values.put(KEY_PICTURE, product.getPicture());
+        values.put(KEY_ID, address.getId());
+        values.put(KEY_NAME, address.getName());
+        values.put(KEY_PHONE, address.getPhone());
+        values.put(KEY_PROVINCE, address.getProvinceId());
+        values.put(KEY_DISTRICT, address.getDistrictId());
+        values.put(KEY_WARD, address.getWardId());
+        values.put(KEY_STREET, address.getStreet());
+        values.put(KEY_USER_ID, address.getUserId());
 
-        db.update(TABLE_PRODUCTS, values, KEY_ID + " = ?", new String[] {String.valueOf(product.getId())});
+        db.insert(TABLE_ADDRESSES, null, values);
+        db.close();
+    }
+
+    public void updateAddress(Address address) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(KEY_NAME, address.getName());
+        values.put(KEY_PHONE, address.getPhone());
+        values.put(KEY_PROVINCE, address.getProvinceId());
+        values.put(KEY_DISTRICT, address.getDistrictId());
+        values.put(KEY_WARD, address.getWardId());
+        values.put(KEY_STREET, address.getStreet());
+
+        db.update(TABLE_ADDRESSES, values, KEY_ID + " = ?", new String[] {String.valueOf(address.getId())});
+        db.close();
+    }
+
+    public int generateAddressId() {
+        String script = "SELECT * FROM " + TABLE_ADDRESSES + " ORDER BY " + KEY_ID + " DESC LIMIT 1";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(script, null);
+        if (cursor.moveToFirst())
+            return cursor.getInt(cursor.getColumnIndex(KEY_ID)) + 1;
+        return 1;
+    }
+
+    public void deleteAddress(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_ADDRESSES, KEY_ID + " = ?", new String[] {String.valueOf(id)});
         db.close();
     }
 }

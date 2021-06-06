@@ -121,6 +121,15 @@ public class AccountFragment extends Fragment {
             }
         });
 
+        showAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), SeeAddressesActivity.class);
+                intent.putExtra("user", user);
+                startActivity(intent);
+            }
+        });
+
         changeAvt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

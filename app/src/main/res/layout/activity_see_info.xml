@@ -38,30 +38,31 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="@color/white"
-        android:layout_marginTop="5dp">
+        android:layout_marginTop="2dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingStart="10dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
+            android:paddingStart="15dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
             android:text="Họ và tên"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/txtFullName"
-            android:layout_width="wrap_content"
+            android:layout_width="315dp"
             android:layout_height="wrap_content"
-            android:paddingRight="10dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
+            android:paddingRight="15dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="18sp"
+            android:textAlignment="textEnd"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -72,17 +73,17 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="@color/white"
-        android:layout_marginTop="5dp">
+        android:layout_marginTop="2dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingStart="10dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
+            android:paddingStart="15dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
             android:text="Giới tính"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -91,11 +92,11 @@
             android:id="@+id/txtSex"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingRight="10dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
+            android:paddingRight="15dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -106,17 +107,17 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="@color/white"
-        android:layout_marginTop="5dp">
+        android:layout_marginTop="2dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingStart="10dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
+            android:paddingStart="15dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
             android:text="Ngày sinh"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -125,11 +126,11 @@
             android:id="@+id/txtBirthDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingRight="10dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
+            android:paddingRight="15dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -140,17 +141,17 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="@color/white"
-        android:layout_marginTop="5dp">
+        android:layout_marginTop="2dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingStart="10dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
+            android:paddingStart="15dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
             android:text="Điện thoại"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -159,11 +160,11 @@
             android:id="@+id/txtPhone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingRight="10dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
+            android:paddingRight="15dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -174,30 +175,31 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="@color/white"
-        android:layout_marginTop="5dp">
+        android:layout_marginTop="2dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingStart="10dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
+            android:paddingStart="15dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
             android:text="Email"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/txtEmail"
-            android:layout_width="wrap_content"
+            android:layout_width="350dp"
             android:layout_height="wrap_content"
-            android:paddingRight="10dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
+            android:paddingRight="15dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="18sp"
+            android:textAlignment="textEnd"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

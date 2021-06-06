@@ -29,7 +29,7 @@ public class RegisterStepFourActivity extends AppCompatActivity {
     ImageView imgAvatar;
     AppCompatButton btnFinish;
     ProgressBar progressBar;
-    Bitmap avt;
+    Bitmap avt, tempAvt;
     String fullName, dateOfBirth, email, password, sex, phone;
 
     @Override
@@ -45,6 +45,7 @@ public class RegisterStepFourActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
 
         avt = BitmapFactory.decodeResource(getResources(), R.drawable.default_avatar);
+        tempAvt = avt;
 
         fullName = getIntent().getStringExtra("fullName");
         dateOfBirth = getIntent().getStringExtra("dateOfBirth");
@@ -71,6 +72,7 @@ public class RegisterStepFourActivity extends AppCompatActivity {
             public void onClick(View v) {
                 imgAvatar.setImageResource(R.drawable.ic_baseline_account_box_24);
                 avt = BitmapFactory.decodeResource(getResources(), R.drawable.default_avatar);
+                tempAvt = avt;
                 btnResetAvatar.setVisibility(View.INVISIBLE);
             }
         });
@@ -125,9 +127,13 @@ public class RegisterStepFourActivity extends AppCompatActivity {
         switch(requestCode) {
             case 0:
                 avt = ImagePickerUtility.getImageFromResult(this, resultCode, data);
-                if (avt == null)
-                    return;
 
+                if (avt == null) {
+                    avt = tempAvt;
+                    return;
+                }
+
+                tempAvt = avt;
                 Bitmap circleBitmap = Bitmap.createBitmap(avt.getWidth(), avt.getHeight(), Bitmap.Config.ARGB_8888);
 
                 BitmapShader shader = new BitmapShader (avt,  Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);

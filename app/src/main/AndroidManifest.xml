@@ -19,7 +19,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FinalProject">
-        <activity android:name=".ChangePasswordActivity"></activity>
+        <activity android:name=".ChooseAdministrativeUnitActivity" />
+        <activity android:name=".AddAndEditAddressActivity" />
+        <activity android:name=".SeeAddressesActivity" />
+        <activity android:name=".ChangePasswordActivity" />
         <activity android:name=".SeeInfoActivity" />
         <activity android:name=".SeeProductDetailsActivity" />
         <activity android:name=".SeeProductsActivity" />
