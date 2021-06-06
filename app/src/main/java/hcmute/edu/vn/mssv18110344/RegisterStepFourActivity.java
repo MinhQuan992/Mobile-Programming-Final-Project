@@ -6,6 +6,10 @@ import androidx.appcompat.widget.AppCompatButton;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Shader;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -25,7 +29,7 @@ public class RegisterStepFourActivity extends AppCompatActivity {
     ImageView imgAvatar;
     AppCompatButton btnFinish;
     ProgressBar progressBar;
-    Bitmap avt;
+    Bitmap avt, tempAvt;
     String fullName, dateOfBirth, email, password, sex, phone;
 
     @Override
@@ -41,6 +45,7 @@ public class RegisterStepFourActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
 
         avt = BitmapFactory.decodeResource(getResources(), R.drawable.default_avatar);
+        tempAvt = avt;
 
         fullName = getIntent().getStringExtra("fullName");
         dateOfBirth = getIntent().getStringExtra("dateOfBirth");
@@ -67,6 +72,7 @@ public class RegisterStepFourActivity extends AppCompatActivity {
             public void onClick(View v) {
                 imgAvatar.setImageResource(R.drawable.ic_baseline_account_box_24);
                 avt = BitmapFactory.decodeResource(getResources(), R.drawable.default_avatar);
+                tempAvt = avt;
                 btnResetAvatar.setVisibility(View.INVISIBLE);
             }
         });
@@ -121,7 +127,23 @@ public class RegisterStepFourActivity extends AppCompatActivity {
         switch(requestCode) {
             case 0:
                 avt = ImagePickerUtility.getImageFromResult(this, resultCode, data);
-                imgAvatar.setImageBitmap(avt);
+
+                if (avt == null) {
+                    avt = tempAvt;
+                    return;
+                }
+
+                tempAvt = avt;
+                Bitmap circleBitmap = Bitmap.createBitmap(avt.getWidth(), avt.getHeight(), Bitmap.Config.ARGB_8888);
+
+                BitmapShader shader = new BitmapShader (avt,  Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+                Paint paint = new Paint();
+                paint.setShader(shader);
+                paint.setAntiAlias(true);
+                Canvas c = new Canvas(circleBitmap);
+                c.drawCircle(avt.getWidth()/2, avt.getHeight()/2, avt.getWidth()/2, paint);
+
+                imgAvatar.setImageBitmap(circleBitmap);
                 btnResetAvatar.setVisibility(View.VISIBLE);
                 Toast.makeText(getApplicationContext(), "Tải ảnh thành công!", Toast.LENGTH_LONG).show();
                 break;
