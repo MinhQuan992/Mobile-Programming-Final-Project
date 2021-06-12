@@ -31,7 +31,7 @@ public class AdministrativeUnitAdapter extends RecyclerView.Adapter<Administrati
 
     @NonNull
     @Override
-    public AdministrativeUnitAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.administrative_unit_item, parent, false);
@@ -39,7 +39,7 @@ public class AdministrativeUnitAdapter extends RecyclerView.Adapter<Administrati
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AdministrativeUnitAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         AdministrativeUnit unit = mUnits.get(position);
         holder.txtName.setText(unit.getName());
     }

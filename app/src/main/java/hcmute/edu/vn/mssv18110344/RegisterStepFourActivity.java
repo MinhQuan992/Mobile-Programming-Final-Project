@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import hcmute.edu.vn.mssv18110344.bean.Cart;
 import hcmute.edu.vn.mssv18110344.bean.User;
 import hcmute.edu.vn.mssv18110344.utility.DatabaseHandler;
 import hcmute.edu.vn.mssv18110344.utility.DbBitmapUtility;
@@ -93,12 +94,13 @@ public class RegisterStepFourActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(getApplicationContext(), RegisterStepFiveActivity.class);
                 DatabaseHandler db = new DatabaseHandler(getApplicationContext());
-                db.openDataBase();
 
-                int id = db.generateId();
+                int userId = db.generateId(), cartId = db.generateCartId();
                 String avatar = DbBitmapUtility.getString(avt);
-                User user = new User(id, fullName, sex, dateOfBirth, phone, email, password, avatar);
+                User user = new User(userId, fullName, sex, dateOfBirth, phone, email, password, avatar);
+                Cart cart = new Cart(cartId, userId);
                 db.addUser(user);
+                db.addCart(cart);
 
                 String subject = "Chào mừng bạn đến với Ministop";
                 String msg = "Tài khoản của bạn đã được tạo thành công. Bạn có thể đăng nhập và tận hưởng những giây phút tuyệt vời cùng Ministop!\nĐội ngũ hỗ trợ Ministop";

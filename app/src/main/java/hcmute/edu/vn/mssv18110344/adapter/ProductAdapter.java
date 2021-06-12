@@ -19,15 +19,18 @@ import java.util.List;
 import hcmute.edu.vn.mssv18110344.R;
 import hcmute.edu.vn.mssv18110344.SeeProductDetailsActivity;
 import hcmute.edu.vn.mssv18110344.bean.Product;
+import hcmute.edu.vn.mssv18110344.bean.User;
 import hcmute.edu.vn.mssv18110344.utility.DbBitmapUtility;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
     private Context mContext;
     private List<Product> mProducts;
+    private User mUser;
 
-    public ProductAdapter(Context context, List<Product> mProducts) {
-        this.mContext = context;
-        this.mProducts = mProducts;
+    public ProductAdapter(Context context, List<Product> products, User user) {
+        mContext = context;
+        mProducts = products;
+        mUser = user;
     }
 
     @Override
@@ -95,6 +98,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 Product product = mProducts.get(position);
                 Intent intent = new Intent(mContext, SeeProductDetailsActivity.class);
                 intent.putExtra("product", product);
+                intent.putExtra("user", mUser);
                 mContext.startActivity(intent);
             }
         }

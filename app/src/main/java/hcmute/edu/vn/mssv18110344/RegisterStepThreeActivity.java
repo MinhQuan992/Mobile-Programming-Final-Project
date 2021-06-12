@@ -79,7 +79,6 @@ public class RegisterStepThreeActivity extends AppCompatActivity {
                 }
 
                 DatabaseHandler db = new DatabaseHandler(getApplicationContext());
-                db.openDataBase();
 
                 if (db.emailExisted(email)) {
                     Toast.makeText(getApplicationContext(), "Địa chỉ email này đã tồn tại trong hệ thống.", Toast.LENGTH_LONG).show();

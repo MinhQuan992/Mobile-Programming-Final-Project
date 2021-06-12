@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
@@ -20,6 +21,7 @@ import java.util.List;
 
 import hcmute.edu.vn.mssv18110344.adapter.AddressAdapter;
 import hcmute.edu.vn.mssv18110344.bean.Address;
+import hcmute.edu.vn.mssv18110344.bean.Cart;
 import hcmute.edu.vn.mssv18110344.bean.User;
 import hcmute.edu.vn.mssv18110344.utility.DatabaseHandler;
 
@@ -46,12 +48,18 @@ public class SeeAddressesActivity extends AppCompatActivity {
         btnAddAddress = findViewById(R.id.btnAddAddress);
 
         User user = (User) getIntent().getSerializableExtra("user");
+        Cart cart = (Cart) getIntent().getSerializableExtra("cart");
 
         DatabaseHandler db = new DatabaseHandler(this);
-        db.openDataBase();
-        addresses = db.getAddresses(user.getId());
+        if (user != null) {
+            addresses = db.getAddresses(user.getId());
+        } else {
+            addresses = db.getAddresses(cart.getUserId());
+            user = db.getUserById(cart.getUserId());
+            Toast.makeText(getApplicationContext(), "Bạn hãy chọn một địa chỉ nhận hàng!", Toast.LENGTH_LONG).show();
+        }
 
-        adapter = new AddressAdapter(this, this, addresses, user);
+        adapter = new AddressAdapter(this, this, addresses, user, cart, imageView, textView);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -72,11 +80,12 @@ public class SeeAddressesActivity extends AppCompatActivity {
             }
         });
 
+        User finalUser = user;
         btnAddAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), AddAndEditAddressActivity.class);
-                intent.putExtra("user", user);
+                intent.putExtra("user", finalUser);
                 startActivityForResult(intent, 0);
             }
         });

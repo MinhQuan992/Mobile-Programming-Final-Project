@@ -97,7 +97,6 @@ public class AccountFragment extends Fragment {
 
         user = (User) getActivity().getIntent().getSerializableExtra("user");
         db = new DatabaseHandler(getContext());
-        db.openDataBase();
 
         Bitmap avt = DbBitmapUtility.getImage(user.getAvatar());
         Bitmap circleBitmap = Bitmap.createBitmap(avt.getWidth(), avt.getHeight(), Bitmap.Config.ARGB_8888);

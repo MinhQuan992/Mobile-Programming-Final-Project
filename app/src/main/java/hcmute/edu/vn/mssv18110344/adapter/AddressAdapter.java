@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -21,9 +22,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import hcmute.edu.vn.mssv18110344.AddAndEditAddressActivity;
+import hcmute.edu.vn.mssv18110344.ConfirmPurchaseActivity;
 import hcmute.edu.vn.mssv18110344.MainActivity;
 import hcmute.edu.vn.mssv18110344.R;
 import hcmute.edu.vn.mssv18110344.bean.Address;
+import hcmute.edu.vn.mssv18110344.bean.Cart;
 import hcmute.edu.vn.mssv18110344.bean.User;
 import hcmute.edu.vn.mssv18110344.utility.DatabaseHandler;
 
@@ -33,19 +36,25 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
     private Activity mActivity;
     private List<Address> mAddresses;
     private User mUser;
-    public DatabaseHandler db;
+    private Cart mCart;
+    private ImageView mImageView;
+    private TextView mTextView;
+    private DatabaseHandler db;
 
-    public AddressAdapter(Context context, Activity activity, List<Address> addresses, User user) {
+    public AddressAdapter(Context context, Activity activity, List<Address> addresses, User user, Cart cart, ImageView imageView, TextView textView) {
         mContext = context;
         mActivity = activity;
         mAddresses = addresses;
         mUser = user;
+        mCart = cart;
+        mImageView = imageView;
+        mTextView = textView;
         db = new DatabaseHandler(context);
     }
 
     @NonNull
     @Override
-    public AddressAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.address_item, parent, false);
@@ -53,7 +62,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AddressAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Address address = mAddresses.get(position);
         holder.txtName.setText(address.getName());
         holder.txtPhone.setText(address.getPhone());
@@ -90,15 +99,29 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
             txtDistrict = itemView.findViewById(R.id.txtDistrict);
             txtProvince = itemView.findViewById(R.id.txtProvince);
             btnEdit = itemView.findViewById(R.id.btnEdit);
+
+            layout.setOnClickListener(this);
             btnEdit.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
-            popupMenu.inflate(R.menu.pop_up_menu);
-            popupMenu.setOnMenuItemClickListener(this);
-            popupMenu.show();
+            int position = getAdapterPosition();
+            if (position != RecyclerView.NO_POSITION) {
+                if (v.getId() == R.id.layout) {
+                    if (mCart == null)
+                        return;
+                    Intent intent = new Intent(mContext, ConfirmPurchaseActivity.class);
+                    intent.putExtra("cart", mCart);
+                    intent.putExtra("address", mAddresses.get(position));
+                    mContext.startActivity(intent);
+                } else {
+                    PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
+                    popupMenu.inflate(R.menu.pop_up_menu);
+                    popupMenu.setOnMenuItemClickListener(this);
+                    popupMenu.show();
+                }
+            }
         }
 
         @Override
@@ -123,6 +146,10 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
                                         mAddresses = db.getAddresses(mUser.getId());
                                         notifyDataSetChanged();
                                         Toast.makeText(mContext, "Xóa địa chỉ thành công!", Toast.LENGTH_LONG).show();
+                                        if (mAddresses == null) {
+                                            mImageView.setVisibility(View.VISIBLE);
+                                            mTextView.setVisibility(View.VISIBLE);
+                                        }
                                     }
                                 })
                                 .setNegativeButton("KHÔNG", new DialogInterface.OnClickListener() {

@@ -19,6 +19,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FinalProject">
+        <activity android:name=".NotifyActivity"></activity>
+        <activity android:name=".ConfirmPurchaseActivity" />
+        <activity android:name=".SeeCartActivity" />
         <activity android:name=".ChooseAdministrativeUnitActivity" />
         <activity android:name=".AddAndEditAddressActivity" />
         <activity android:name=".SeeAddressesActivity" />
