@@ -251,6 +251,22 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return productList;
     }
 
+    public List<Product> getProductsByText(String text) {
+        List<Product> productList = new ArrayList<>();
+        String script = "SELECT * FROM " + TABLE_PRODUCTS + " WHERE " + KEY_NAME + " LIKE '%" + text + "%'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(script, null);
+        cursor.moveToFirst();
+
+        while (!cursor.isAfterLast()) {
+            Product product = new Product(cursor.getInt(0), cursor.getString(1), cursor.getInt(2), cursor.getInt(3), cursor.getInt(4), cursor.getInt(5));
+            productList.add(product);
+            cursor.moveToNext();
+        }
+
+        return productList;
+    }
+
     //On PROVINCES, DISTRICTS and WARDS table
     public List<AdministrativeUnit> getProvinces() {
         List<AdministrativeUnit> provinceList = new ArrayList<>();
@@ -325,22 +341,28 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     //On ADDRESSES table
+    public Address getAddressById(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_ADDRESSES, null, KEY_ID + " = ?", new String[] {String.valueOf(id)}, null, null, null);
+        cursor.moveToFirst();
+        Address address = new Address(cursor.getInt(0), cursor.getString(1), cursor.getString(2),  cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6), cursor.getInt(7));
+        return address;
+    }
+
     public List<Address> getAddresses(int userId) {
         List<Address> addressList = new ArrayList<>();
         String script = "SELECT * FROM " + TABLE_ADDRESSES + " WHERE " + KEY_USER_ID + " = " + String.valueOf(userId);
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(script, null);
+        cursor.moveToFirst();
 
-        if (cursor.moveToFirst()) {
-            while (!cursor.isAfterLast()) {
-                Address address = new Address(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6), cursor.getInt(7));
-                addressList.add(address);
-                cursor.moveToNext();
-            }
-            return addressList;
+        while (!cursor.isAfterLast()) {
+            Address address = new Address(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6), cursor.getInt(7));
+            addressList.add(address);
+            cursor.moveToNext();
         }
 
-        return null;
+        return addressList;
     }
 
     public void addAddress(Address address) {
@@ -409,6 +431,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         db.insert(TABLE_CARTS, null, values);
         db.close();
+    }
+
+    public Cart getCartById(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_CARTS, null, KEY_CART_ID + " = ?", new String[] {String.valueOf(id)}, null, null, null);
+        cursor.moveToFirst();
+        Cart cart = new Cart(cursor.getInt(0), cursor.getInt(1));
+        return cart;
     }
 
     public Cart getCart(User user) {
@@ -498,5 +528,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         db.insert(TABLE_ORDERS, null, values);
         db.close();
+    }
+
+    public List<Order> getOrdersOfUser(int userId) {
+        List<Order> orders = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String script = "SELECT * FROM " + TABLE_ORDERS + " INNER JOIN " + TABLE_CARTS
+                + " ON " + TABLE_ORDERS + "." + KEY_CART_ID + " = " + TABLE_CARTS + "." + KEY_CART_ID
+                + " WHERE " + KEY_USER_ID + " = " + userId;
+        Cursor cursor = db.rawQuery(script, null);
+        cursor.moveToFirst();
+
+        while (!cursor.isAfterLast()) {
+            Order order = new Order(cursor.getInt(0), cursor.getInt(1), cursor.getString(2), cursor.getString(3), cursor.getInt(4), cursor.getString(5), cursor.getString(6), cursor.getInt(7));
+            orders.add(order);
+            cursor.moveToNext();
+        }
+
+        return orders;
     }
 }

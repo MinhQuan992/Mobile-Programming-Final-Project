@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -24,6 +26,8 @@ public class SeeProductsActivity extends AppCompatActivity {
 
     ImageButton btnBack, btnCart;
     RecyclerView recyclerView;
+    ImageView imageView;
+    TextView textView;
     List<Product> products;
     ProductAdapter adapter;
 
@@ -36,18 +40,36 @@ public class SeeProductsActivity extends AppCompatActivity {
         btnBack = findViewById(R.id.btnBack);
         btnCart = findViewById(R.id.btnCart);
         recyclerView = findViewById(R.id.recyclerView);
+        imageView = findViewById(R.id.imageView);
+        textView = findViewById(R.id.textView);
 
         int category = getIntent().getIntExtra("category", 1);
         User user = (User) getIntent().getSerializableExtra("user");
+        String type = getIntent().getStringExtra("type");
 
         DatabaseHandler db = new DatabaseHandler(getApplicationContext());
         Cart cart = db.getCart(user);
 
-        products = db.getProducts(category);
-        adapter = new ProductAdapter(this, products, user);
-        recyclerView.setAdapter(adapter);
-        StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(gridLayoutManager);
+        if (type.equals("from category")) {
+            products = db.getProducts(category);
+        } else {
+            String textFind = getIntent().getStringExtra("text");
+            products = db.getProductsByText(textFind);
+        }
+
+        if (products.size() != 0) {
+            adapter = new ProductAdapter(this, products, user);
+            recyclerView.setAdapter(adapter);
+            StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+            recyclerView.setLayoutManager(gridLayoutManager);
+
+            imageView.setVisibility(View.INVISIBLE);
+            textView.setVisibility(View.INVISIBLE);
+        } else {
+            recyclerView.setVisibility(View.INVISIBLE);
+            imageView.setVisibility(View.VISIBLE);
+            textView.setVisibility(View.VISIBLE);
+        }
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override

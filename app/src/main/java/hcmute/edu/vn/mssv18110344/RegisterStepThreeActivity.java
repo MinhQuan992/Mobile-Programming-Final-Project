@@ -24,7 +24,6 @@ public class RegisterStepThreeActivity extends AppCompatActivity {
     EditText txtFullName, txtDateOfBirth, txtEmail, txtPassword, txtConfirmPassword;
     RadioGroup radioGroup;
     AppCompatButton btnNext;
-    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +39,8 @@ public class RegisterStepThreeActivity extends AppCompatActivity {
         txtConfirmPassword = findViewById(R.id.txtConfirmPassword);
         radioGroup = findViewById(R.id.radioGroup);
         btnNext = findViewById(R.id.btnNext);
-        progressBar = findViewById(R.id.progressBar);
+
+        String phone = getIntent().getStringExtra("phoneNumber");
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,9 +53,6 @@ public class RegisterStepThreeActivity extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressBar.setVisibility(View.VISIBLE);
-                btnNext.setVisibility(View.INVISIBLE);
-
                 String fullName = txtFullName.getText().toString().trim();
                 String dateOfBirth = txtDateOfBirth.getText().toString().trim();
                 String email = txtEmail.getText().toString().trim();
@@ -65,16 +62,12 @@ public class RegisterStepThreeActivity extends AppCompatActivity {
 
                 if (fullName.isEmpty() || dateOfBirth.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
                     Toast.makeText(getApplicationContext(), "Bạn phải nhập tất cả thông tin!", Toast.LENGTH_LONG).show();
-                    progressBar.setVisibility(View.GONE);
-                    btnNext.setVisibility(View.VISIBLE);
                     return;
                 }
 
                 if (!isEmailValid(email)) {
                     Toast.makeText(getApplicationContext(), "Bạn phải nhập địa chỉ email hợp lệ!", Toast.LENGTH_LONG).show();
                     txtEmail.requestFocus();
-                    progressBar.setVisibility(View.GONE);
-                    btnNext.setVisibility(View.VISIBLE);
                     return;
                 }
 
@@ -83,8 +76,6 @@ public class RegisterStepThreeActivity extends AppCompatActivity {
                 if (db.emailExisted(email)) {
                     Toast.makeText(getApplicationContext(), "Địa chỉ email này đã tồn tại trong hệ thống.", Toast.LENGTH_LONG).show();
                     txtEmail.requestFocus();
-                    progressBar.setVisibility(View.GONE);
-                    btnNext.setVisibility(View.VISIBLE);
                     return;
                 }
 
@@ -93,8 +84,6 @@ public class RegisterStepThreeActivity extends AppCompatActivity {
                     txtPassword.setText("");
                     txtPassword.requestFocus();
                     txtConfirmPassword.setText("");
-                    progressBar.setVisibility(View.GONE);
-                    btnNext.setVisibility(View.VISIBLE);
                     return;
                 }
 
@@ -107,8 +96,6 @@ public class RegisterStepThreeActivity extends AppCompatActivity {
                     txtPassword.setText("");
                     txtPassword.requestFocus();
                     txtConfirmPassword.setText("");
-                    progressBar.setVisibility(View.GONE);
-                    btnNext.setVisibility(View.VISIBLE);
                     return;
                 }
 
@@ -122,21 +109,12 @@ public class RegisterStepThreeActivity extends AppCompatActivity {
                 intent.putExtra("email", email);
                 intent.putExtra("password", password);
                 intent.putExtra("sex", sex);
-                intent.putExtra("phone", getIntent().getStringExtra("phoneNumber"));
+                intent.putExtra("phone", phone);
 
-                startActivityForResult(intent, 1);
+                startActivity(intent);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RESULT_OK) {
-            progressBar.setVisibility(View.INVISIBLE);
-            btnNext.setVisibility(View.VISIBLE);
-        }
     }
 
     @Override

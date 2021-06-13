@@ -5,11 +5,14 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -104,12 +107,28 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        txtFind.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    Intent intent = new Intent(v.getContext(), SeeProductsActivity.class);
+                    intent.putExtra("user", user);
+                    intent.putExtra("type", "from text");
+                    intent.putExtra("text", txtFind.getText().toString().trim());
+                    startActivity(intent);
+                    return true;
+                }
+                return false;
+            }
+        });
+
         return view;
     }
 
     public void onClick(View v) {
         Intent intent = new Intent(v.getContext(), SeeProductsActivity.class);
         intent.putExtra("user", user);
+        intent.putExtra("type", "from category");
         switch (v.getId()) {
             case R.id.btnRice:
                 intent.putExtra("category", 1);

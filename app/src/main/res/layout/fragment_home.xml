@@ -46,6 +46,7 @@
 
             <EditText
                 android:id="@+id/txtFind"
+                android:imeOptions="actionSearch"
                 android:layout_width="380dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"

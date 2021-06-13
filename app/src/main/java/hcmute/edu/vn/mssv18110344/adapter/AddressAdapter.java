@@ -74,14 +74,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        int count;
-        try {
-            count = mAddresses.size();
-        } catch (Exception e) {
-            count = 0;
-            e.printStackTrace();
-        }
-        return count;
+        return mAddresses.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, PopupMenu.OnMenuItemClickListener{
@@ -146,7 +139,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
                                         mAddresses = db.getAddresses(mUser.getId());
                                         notifyDataSetChanged();
                                         Toast.makeText(mContext, "Xóa địa chỉ thành công!", Toast.LENGTH_LONG).show();
-                                        if (mAddresses == null) {
+                                        if (mAddresses.size() == 0) {
                                             mImageView.setVisibility(View.VISIBLE);
                                             mTextView.setVisibility(View.VISIBLE);
                                         }

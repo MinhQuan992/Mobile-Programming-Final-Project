@@ -63,7 +63,7 @@ public class SeeAddressesActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        if (addresses == null) {
+        if (addresses.size() == 0) {
             imageView.setVisibility(View.VISIBLE);
             textView.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.INVISIBLE);
@@ -99,8 +99,7 @@ public class SeeAddressesActivity extends AppCompatActivity {
                 Bundle args = data.getBundleExtra("bundle");
                 List<Address> addressList = (List<Address>) args.getSerializable("addressList");
 
-                if (addresses == null) {
-                    addresses = new ArrayList<>();
+                if (addresses.size() != 0) {
                     imageView.setVisibility(View.INVISIBLE);
                     textView.setVisibility(View.INVISIBLE);
                     recyclerView.setVisibility(View.VISIBLE);

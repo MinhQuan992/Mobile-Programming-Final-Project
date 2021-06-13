@@ -118,14 +118,14 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (doubleBack) {
             super.onBackPressed();
-            return;
+            finish();
+            System.exit(0);
         }
 
         doubleBack = true;
         Toast.makeText(this, "Nhấn BACK lần nữa để thoát!", Toast.LENGTH_SHORT).show();
 
         new Handler().postDelayed(new Runnable() {
-
             @Override
             public void run() {
                 doubleBack = false;
