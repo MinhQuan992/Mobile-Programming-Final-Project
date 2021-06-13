@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import hcmute.edu.vn.mssv18110344.bean.Cart;
 import hcmute.edu.vn.mssv18110344.bean.User;
 import hcmute.edu.vn.mssv18110344.utility.DatabaseHandler;
 import hcmute.edu.vn.mssv18110344.utility.DbBitmapUtility;
@@ -93,15 +94,19 @@ public class RegisterStepFourActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(getApplicationContext(), RegisterStepFiveActivity.class);
                 DatabaseHandler db = new DatabaseHandler(getApplicationContext());
-                db.openDataBase();
 
-                int id = db.generateId();
+                int userId = db.generateId(), cartId = db.generateCartId();
                 String avatar = DbBitmapUtility.getString(avt);
-                User user = new User(id, fullName, sex, dateOfBirth, phone, email, password, avatar);
+                User user = new User(userId, fullName, sex, dateOfBirth, phone, email, password, avatar);
+                Cart cart = new Cart(cartId, userId);
                 db.addUser(user);
+                db.addCart(cart);
 
                 String subject = "Chào mừng bạn đến với Ministop";
-                String msg = "Tài khoản của bạn đã được tạo thành công. Bạn có thể đăng nhập và tận hưởng những giây phút tuyệt vời cùng Ministop!\nĐội ngũ hỗ trợ Ministop";
+                String msg = "Tài khoản của bạn đã được tạo thành công.\n" +
+                        "Bạn có thể đăng nhập và tận hưởng những giây phút tuyệt vời cùng Ministop!\n" +
+                        "Trân trọng,\n" +
+                        "Đội ngũ hỗ trợ Ministop";
                 JavaMailAPI javaMailAPI = new JavaMailAPI(getApplicationContext(), email, subject, msg);
                 javaMailAPI.execute();
 
@@ -115,9 +120,6 @@ public class RegisterStepFourActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent backIntent = new Intent();
-        backIntent.putExtra("phoneNumber", phone);
-        setResult(RESULT_OK, backIntent);
         finish();
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }

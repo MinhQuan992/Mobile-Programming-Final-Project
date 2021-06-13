@@ -3,10 +3,21 @@ package hcmute.edu.vn.mssv18110344;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import java.util.List;
+
+import hcmute.edu.vn.mssv18110344.adapter.OrderAdapter;
+import hcmute.edu.vn.mssv18110344.bean.Order;
+import hcmute.edu.vn.mssv18110344.bean.User;
+import hcmute.edu.vn.mssv18110344.utility.DatabaseHandler;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,6 +25,12 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class OrderFragment extends Fragment {
+
+    View view;
+    ImageView imageView;
+    TextView textView;
+    RecyclerView recyclerView;
+    User user;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -59,6 +76,29 @@ public class OrderFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_order, container, false);
+        view =  inflater.inflate(R.layout.fragment_order, container, false);
+        recyclerView = view.findViewById(R.id.recyclerView);
+        imageView = view.findViewById(R.id.imageView);
+        textView = view.findViewById(R.id.textView);
+
+        user = (User) getActivity().getIntent().getSerializableExtra("user");
+        DatabaseHandler db = new DatabaseHandler(getContext());
+        List<Order> orders = db.getOrdersOfUser(user.getId());
+
+        if (orders.size() == 0) {
+            imageView.setVisibility(View.VISIBLE);
+            textView.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.INVISIBLE);
+        } else {
+            imageView.setVisibility(View.INVISIBLE);
+            textView.setVisibility(View.INVISIBLE);
+            recyclerView.setVisibility(View.VISIBLE);
+
+            OrderAdapter adapter = new OrderAdapter(getContext(), orders);
+            recyclerView.setAdapter(adapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        }
+
+        return view;
     }
 }

@@ -53,7 +53,6 @@ public class AddAndEditAddressActivity extends AppCompatActivity {
 
         Address address = (Address) getIntent().getSerializableExtra("address");
         DatabaseHandler db = new DatabaseHandler(this);
-        db.openDataBase();
 
         if (address == null) {
             txtProvince.setText(TEXT_NOT_CHOOSE_PROVINCE);

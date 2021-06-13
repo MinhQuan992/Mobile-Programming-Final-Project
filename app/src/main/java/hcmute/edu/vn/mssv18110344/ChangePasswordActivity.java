@@ -80,7 +80,6 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 user.setPassword(newPassword);
 
                 DatabaseHandler db = new DatabaseHandler(getApplicationContext());
-                db.openDataBase();
                 db.updateUser(user);
                 txtPassword.setText("");
                 txtNewPassword.setText("");

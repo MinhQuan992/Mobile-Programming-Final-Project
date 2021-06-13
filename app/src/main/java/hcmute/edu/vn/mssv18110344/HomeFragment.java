@@ -5,13 +5,20 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import hcmute.edu.vn.mssv18110344.bean.Cart;
+import hcmute.edu.vn.mssv18110344.bean.User;
+import hcmute.edu.vn.mssv18110344.utility.DatabaseHandler;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +30,7 @@ public class HomeFragment extends Fragment {
     View view;
     EditText txtFind;
     ImageButton btnCart, btnRice, btnNoodle, btnWater, btnSalad, btnSandwich, btnFastFood;
+    User user;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -70,6 +78,10 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        user = (User) getActivity().getIntent().getSerializableExtra("user");
+        DatabaseHandler db = new DatabaseHandler(getContext());
+        Cart cart = db.getCart(user);
+
         txtFind = view.findViewById(R.id.txtFind);
         btnCart = view.findViewById(R.id.btnCart);
         btnRice = view.findViewById(R.id.btnRice);
@@ -86,11 +98,37 @@ public class HomeFragment extends Fragment {
         btnSandwich.setOnClickListener(this::onClick);
         btnFastFood.setOnClickListener(this::onClick);
 
+        btnCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), SeeCartActivity.class);
+                intent.putExtra("cart", cart);
+                startActivity(intent);
+            }
+        });
+
+        txtFind.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    Intent intent = new Intent(v.getContext(), SeeProductsActivity.class);
+                    intent.putExtra("user", user);
+                    intent.putExtra("type", "from text");
+                    intent.putExtra("text", txtFind.getText().toString().trim());
+                    startActivity(intent);
+                    return true;
+                }
+                return false;
+            }
+        });
+
         return view;
     }
 
     public void onClick(View v) {
         Intent intent = new Intent(v.getContext(), SeeProductsActivity.class);
+        intent.putExtra("user", user);
+        intent.putExtra("type", "from category");
         switch (v.getId()) {
             case R.id.btnRice:
                 intent.putExtra("category", 1);

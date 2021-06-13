@@ -88,7 +88,6 @@ public class ResetPassStepThreeActivity extends AppCompatActivity {
                 user.setPassword(password);
 
                 DatabaseHandler db = new DatabaseHandler(getApplicationContext());
-                db.openDataBase();
                 db.updateUser(user);
 
                 Intent intent = new Intent(getApplicationContext(), ResetPassStepFourActivity.class);

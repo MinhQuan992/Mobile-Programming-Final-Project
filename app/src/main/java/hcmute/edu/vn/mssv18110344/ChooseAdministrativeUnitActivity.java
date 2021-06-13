@@ -41,7 +41,6 @@ public class ChooseAdministrativeUnitActivity extends AppCompatActivity {
         String id = getIntent().getStringExtra("id");
 
         DatabaseHandler db = new DatabaseHandler(this);
-        db.openDataBase();
 
         switch (type) {
             case "province":
